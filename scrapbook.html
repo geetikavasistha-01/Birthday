@@ -795,6 +795,17 @@
         }
         
         window.onload = addRandomElements;
+
+        // Letter opening functionality
+        const letterEnvelope = document.getElementById('letterEnvelope');
+        const letterContent = document.getElementById('letterContent');
+
+        letterEnvelope.addEventListener('click', function() {
+            letterContent.classList.add('open');
+            letterEnvelope.style.display = 'none';
+            // Add sparkle effect when letter opens
+            createSparkles(letterContent);
+        });
     </script>
 </body>
 </html>
