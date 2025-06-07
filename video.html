@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Playlist</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffcce6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .checkered-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #ffcce6 25%, #ffe6f2 25%, #ffe6f2 50%, #ffcce6 50%, #ffcce6 75%, #ffe6f2 75%, #ffe6f2 100%);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 50px 50px;
+            }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .title {
+            font-size: 3rem;
+            color: #ff1493;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Music Player Styles */
+        .music-container {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 204, 230, 0.9) 100%);
+            border-radius: 25px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(255, 20, 147, 0.3);
+            border: 8px solid #ff99cc;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: musicGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes musicGlow {
+            0% {
+                box-shadow: 0 15px 35px rgba(255, 20, 147, 0.3);
+            }
+            100% {
+                box-shadow: 0 15px 35px rgba(255, 20, 147, 0.6);
+            }
+        }
+        
+        .music-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 182, 193, 0.3), transparent);
+            animation: shimmer 4s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .music-header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .music-title {
+            font-size: 2.2rem;
+            color: #ff1493;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .music-subtitle {
+            font-size: 1.1rem;
+            color: #d1477a;
+            font-style: italic;
+        }
+        
+        .spotify-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: white;
+            padding: 5px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+        
+        .spotify-embed {
+            width: 100%;
+            height: 380px;
+            border: none;
+            border-radius: 15px;
+        }
+        
+        .video-message {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            transform: rotate(1deg);
+            border: 10px solid #ff99cc;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .video-message p {
+            margin-bottom: 15px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #ff1493;
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .decoration {
+            position: absolute;
+            font-size: 2rem;
+            z-index: -1;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            color: #ff1493;
+            font-size: 1.5rem;
+            animation: floatHeart 6s ease-in-out infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes floatHeart {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            25% {
+                transform: translateY(-10px) rotate(5deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) rotate(-5deg);
+                opacity: 0.8;
+            }
+            75% {
+                transform: translateY(-10px) rotate(3deg);
+                opacity: 1;
+            }
+        }
+        
+        .music-note {
+            position: absolute;
+            font-size: 1.2rem;
+            color: #ff66b3;
+            animation: musicFloat 4s ease-in-out infinite;
+        }
+        
+        @keyframes musicFloat {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-15px) scale(1.1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .spotify-embed {
+                height: 300px;
+            }
+            
+            .music-title {
+                font-size: 1.8rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkered-bg"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Birthday Playlist</h1>
+        </div>
+        
+        <!-- Music Player Section -->
+        <div class="music-container">
+            <div class="floating-hearts">
+                <div class="heart" style="top: 10%; left: 5%; animation-delay: 0s;">💕</div>
+                <div class="heart" style="top: 15%; right: 8%; animation-delay: 1s;">💖</div>
+                <div class="heart" style="bottom: 20%; left: 12%; animation-delay: 2s;">💝</div>
+                <div class="heart" style="bottom: 25%; right: 15%; animation-delay: 3s;">💗</div>
+                <div class="heart" style="top: 30%; left: 25%; animation-delay: 1.5s;">💓</div>
+                <div class="heart" style="bottom: 35%; right: 30%; animation-delay: 2.5s;">💕</div>
+            </div>
+            
+            <div class="music-note" style="top: 5%; left: 15%; animation-delay: 0.5s;">♪</div>
+            <div class="music-note" style="top: 12%; right: 20%; animation-delay: 1.5s;">♫</div>
+            <div class="music-note" style="bottom: 10%; left: 20%; animation-delay: 2s;">♪</div>
+            <div class="music-note" style="bottom: 8%; right: 12%; animation-delay: 1s;">♫</div>
+            
+            <div class="music-header">
+                <h2 class="music-title">🎵 Birthday Playlist 🎵</h2>
+                <p class="music-subtitle">Songs to celebrate your special day!</p>
+            </div>
+            
+            <div class="spotify-container">
+                <iframe
+                  class="spotify-embed"
+                  style="display: block; border-radius:12px"
+                  src="https://open.spotify.com/embed/playlist/6y4Of1PJB9P3XdNOEHMBhM?utm_source=generator"
+                  width="100%"
+                  height="352"
+                  frameborder="0"
+                  allowfullscreen=""
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy">
+                </iframe>
+            </div>
+        </div>
+        
+        <div class="video-message">
+            <h2 style="color: #ff1493; text-align: center;">Happy Adulting baby!</h2>
+            
+            <p>This is my piece of heart for you. I put my love into building this and for you I'd do anything, except of course all the NSFW things you say. I know that you are going through a lot but we will go through everything together and grow out of every situation, beautifully.</p>
+
+            <p>With all my love,<br>Idli</p>
+        </div>
+        
+        <div class="navigation">
+            <a href="scrapbook.html" class="button">← Back to Scrapbook</a>
+            <a href="index.html" class="button">Back to Home</a>
+        </div>
+    </div>
+    
+    <!-- Decorative elements -->
+    <div class="decoration" style="top: 10%; left: 5%;">🎀</div>
+    <div class="decoration" style="top: 20%; right: 5%;">★</div>
+    <div class="decoration" style="bottom: 15%; left: 8%;">🌸</div>
+    <div class="decoration" style="bottom: 25%; right: 8%;">🌼</div>
+    
+    <script>
+        // Add random decorative elements
+        function addRandomElements() {
+            const container = document.querySelector('body');
+            const elements = ['🌼', '🌸', '★', '✿', '❀', '🎀', '🎂', '🎁'];
+            
+            for (let i = 0; i < 15; i++) {
+                const element = document.createElement('div');
+                const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                
+                element.textContent = randomElement;
+                element.style.position = 'fixed';
+                element.style.fontSize = Math.random() * 2 + 1 + 'rem';
+                element.style.top = Math.random() * 100 + '%';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.zIndex = '-1';
+                element.style.animation = `float ${Math.random() * 5 + 3}s ease-in-out infinite`;
+                element.style.animationDelay = Math.random() * 5 + 's';
+                
+                document.body.appendChild(element);
+            }
+        }
+        
+        // Add dynamic heart animations
+        function createFloatingHeart() {
+            const musicContainer = document.querySelector('.music-container');
+            const heart = document.createElement('div');
+            const hearts = ['💕', '💖', '💗', '💝', '💓', '💞'];
+            
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.position = 'absolute';
+            heart.style.fontSize = Math.random() * 1 + 0.8 + 'rem';
+            heart.style.left = Math.random() * 90 + '%';
+            heart.style.top = '100%';
+            heart.style.color = '#ff1493';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '3';
+            heart.style.opacity = '0.8';
+            heart.style.animation = 'heartRise 4s linear forwards';
+            
+            musicContainer.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+        
+        // Add CSS for heart rise animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes heartRise {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.8;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-400px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        window.onload = function() {
+            addRandomElements();
+            
+            // Create floating hearts every 3 seconds
+            setInterval(createFloatingHeart, 3000);
+        };
+    </script>
+</body>
+</html>

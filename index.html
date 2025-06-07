@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Happy Birthday Aduu</title>
+
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ffcce6;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .checkered-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(45deg, #ffcce6 25%, #ffe6f2 25%, #ffe6f2 50%, #ffcce6 50%, #ffcce6 75%, #ffe6f2 75%, #ffe6f2 100%);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        .title {
+            font-size: 4rem;
+            color: #ff1493;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #ff1493;
+            color: white;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .star, .flower, .bow {
+            position: absolute;
+            font-size: 2.5rem;
+            color: #ff99cc;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .cat, .mouse {
+            position: absolute;
+            bottom: 20px;
+            font-size: 4rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .cat { left: 50px; }
+        .mouse { right: 50px; animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="checkered-bg"></div>
+
+    <div class="container">
+        <h1 class="title" id="typewriter"></h1>
+        <a href="scrapbook.html" class="button">CLICK HERE!!!</a>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="star" style="top: 15%; left: 70%;">★</div>
+    <div class="star" style="top: 20%; left: 75%;">★</div>
+    <div class="flower" style="top: 10%; left: 20%;">🌼</div>
+    <div class="flower" style="top: 15%; left: 15%;">🌼</div>
+    <div class="flower" style="top: 20%; left: 25%;">🌼</div>
+    <div class="flower" style="top: 25%; left: 10%;">🌼</div>
+    <div class="flower" style="top: 10%; right: 20%;">🌸</div>
+    <div class="flower" style="top: 15%; right: 15%;">🌸</div>
+    <div class="bow" style="top: 5%; left: 5%;">🎀</div>
+    <div class="bow" style="top: 10%; left: 10%;">🎀</div>
+    <div class="cat">🐱</div>
+    <div class="mouse">🐭</div>
+
+    <!-- Scripts -->
+    <script>
+        const text = "HAPPY BIRTHDAY\n 💗 ADUU 💗";
+        let index = 0;
+
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML +=
+                    text.charAt(index) === "\n" ? "<br>" : text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+
+        function addRandomElements() {
+            const elements = ['🌼', '🌸', '★', '✿', '❀'];
+            const colors = ['#ff99cc', '#ffccff', '#ff66b2', '#ff3399', '#ff0066'];
+
+            for (let i = 0; i < 20; i++) {
+                const element = document.createElement('div');
+                element.textContent = elements[Math.floor(Math.random() * elements.length)];
+                element.style.position = 'absolute';
+                element.style.color = colors[Math.floor(Math.random() * colors.length)];
+                element.style.fontSize = `${Math.random() * 2 + 1}rem`;
+                element.style.top = `${Math.random() * 100}%`;
+                element.style.left = `${Math.random() * 100}%`;
+                element.style.zIndex = '-1';
+                element.style.animation = `float ${Math.random() * 5 + 3}s ease-in-out infinite`;
+                element.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(element);
+            }
+        }
+
+        window.onload = () => {
+            addRandomElements();
+            typeWriter();
+            setTimeout(() => {
+                confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
+            }, 800);
+
+            gsap.from(".button", { duration: 1.2, scale: 0.5, opacity: 0, delay: 1.5, ease: "back.out(1.7)" });
+        };
+    </script>
+</body>
+</html>
